@@ -34,9 +34,7 @@ const getProductosById = async(req, res = response)=>{
          })
       }
       res.status(200).json({
-         message: 'Productos',
          response: productos,
-         total: count
       })
    }catch(error){
       res.status(500).json({
