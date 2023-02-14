@@ -1,6 +1,7 @@
 const { response } = require('express');
 const productoRepository = require ('../../repositories/productosRepositories');
 const updateProducto = async(req, res = response)=>{
+   console.log('req.body: ', req.body)
    const id = req.body._id;
    const body = req.body;
    try{
