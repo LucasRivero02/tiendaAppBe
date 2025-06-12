@@ -1,6 +1,6 @@
 const { response } = require('express');
 const productosRepository = require ('../../repositories/productosRepositories');
-// consulto todas las cuentas existentes
+// consulto todas los productos existentes
 const getProductos = async(req, res = response)=>{
    try{
       const productos = await productosRepository.getAll();

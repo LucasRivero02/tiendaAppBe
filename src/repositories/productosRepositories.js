@@ -20,7 +20,7 @@ const save   = async (body) => {
    return producto;
 }
 
-const updateOne = async (id, body)  => await Producto.findByIdAndUpdate(id, body);
+const updateOne = async (id, body)  => await Producto.findByIdAndUpdate(id, body, { new: true });
 
 module.exports = {
    getAll,
