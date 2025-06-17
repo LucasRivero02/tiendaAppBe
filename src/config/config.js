@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const mail = {
-    user: process.env.EMAIL,
+    user: process.env.MAIL,
     pass:  process.env.PASSWORD_MAIL,
 }
 
