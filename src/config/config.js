@@ -34,6 +34,7 @@ let transporter = nodemailer.createTransport({
   }
 
   const getTemplate = (name, token) => {
+    const endpoint = process.env.ENDPOINT_CONFIRM
       return `
         <head>
             <link rel="stylesheet" href="./style.css">
@@ -44,7 +45,7 @@ let transporter = nodemailer.createTransport({
             <h2>Hola ${ name }</h2>
             <p>Para confirmar tu cuenta, ingresa al siguiente enlace</p>
             <a
-                href="http://localhost:3030/api/v1/confirm/${ token }"
+                href="${ENDPOINT_CONFIRM}/${ token }"
                 target="_blank"
             >Confirmar Cuenta</a>
         </div>
