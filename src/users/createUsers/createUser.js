@@ -29,6 +29,7 @@ const createUser = async (req, res = response) => {
          message: 'El Usuario se creo correctamente'
       })
    }catch (error){
+      console.error('Error al crear usuario:', error);
       return res.status(500).json({
          message: 'Error interno del servidor',
          err: error
