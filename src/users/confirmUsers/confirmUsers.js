@@ -1,4 +1,6 @@
 const { response } = require('express');
+const path = require('path');
+const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/users');
 const verifyToken = require('../../routers/validate-token');
