@@ -43,6 +43,7 @@ const confirm = async (req, res) => {
     });
        
    } catch (error) {
+        console.error('Error al confirmar usuario:', error);
        return res.json({
            success: false,
            msg: 'Error al confirmar usuario'
