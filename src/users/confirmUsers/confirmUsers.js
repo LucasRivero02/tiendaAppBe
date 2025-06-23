@@ -29,8 +29,18 @@ const confirm = async (req, res) => {
       existeEmail.status = true;
       // Actualizar usuario
       const user = await userRepository.updateOne(id, existeEmail);
-      // Redireccionar a la confirmación
-      return res.redirect('/confirm.html');
+    const filePath = path.join(__dirname, 'confirm.html'); // Ajustá si está en otra carpeta
+    fs.readFile(filePath, 'utf8', (err, html) => {
+      if (err) {
+        console.error('Error al leer confirm.html:', err);
+        return res.status(500).send('Error al cargar la página de confirmación');
+      }
+
+      const frontendUrl = process.env.FRONTEND_URL;
+      const updatedHtml = html.replace(/\$\{FRONTEND_URL\}/g, frontendUrl);
+
+      res.send(updatedHtml);
+    });
        
    } catch (error) {
        return res.json({
