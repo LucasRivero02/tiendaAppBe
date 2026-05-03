@@ -18,7 +18,7 @@ const createUser = async (req, res = response) => {
          name: user.name,
          email: user.email,
          id: user._id,
-      }, process.env.SECRET_KEY)
+      }, process.env.JWT_SECRET)
       // Obtener un template
       const template = getTemplate(email, token);
 

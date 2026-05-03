@@ -37,7 +37,7 @@ const loginUser = async(req, res = response)=>{
          email: user.email,
          id: user._id,
          rol: user.rol,
-      }, process.env.SECRET_KEY)
+      }, process.env.JWT_SECRET)
 
       res.status(200).json({
          ok: true,

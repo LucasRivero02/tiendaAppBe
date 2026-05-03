@@ -1,0 +1,119 @@
+service: tienda-be-lambda
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1  # Cambia a tu región preferida
+  stage: dev
+  environment:
+    MONGO_URI: ${ssm:/tienda/prod/mongo_uri}
+    JWT_SECRET: ${ssm:/tienda/prod/jwt_secret}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: "*"
+    # Permisos para acceder a AWS Systems Manager Parameter Store
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+        - ssm:GetParameters
+      Resource: 
+        - "arn:aws:ssm:${aws:region}:${aws:accountId}:parameter/tienda/*"
+
+package:
+  individually: true # Empaqueta cada Lambda por separado (pesan menos)
+  patterns:
+    - '!node_modules/**' # (Opcional, ver paso siguiente)
+    - '!test/**'
+    - '!.git/**'
+    - '!.github/**'
+    - '!README.md'
+    - '!package-lock.json'
+    - '!*.zip' # Excluye archivos zip viejos que hayan quedado en la carpeta
+
+functions:
+  getProductos:
+    handler: src/lambda/getProductos.handler
+    events:
+      - http:
+          path: /producto
+          method: get
+          cors: true
+  
+  getProductosById:
+    handler: src/lambda/getProductosById.handler
+    events:
+      - http:
+          path: /producto/{id}
+          method: get
+          cors: true
+  
+  createProducto:
+    handler: src/lambda/createProducto.handler
+    events:
+      - http:
+          path: /producto
+          method: post
+          cors: true
+  
+  updateProducto:
+    handler: src/lambda/updateProducto.handler
+    events:
+      - http:
+          path: /producto/{id}
+          method: put
+          cors: true
+  
+  deleteProducto:
+    handler: src/lambda/deleteProducto.handler
+    events:
+      - http:
+          path: /producto/{id}
+          method: delete
+          cors: true
+  
+  createUser:
+    handler: src/lambda/createUser.handler
+    events:
+      - http:
+          path: /register
+          method: post
+          cors: true
+  
+  loginUser:
+    handler: src/lambda/loginUser.handler
+    events:
+      - http:
+          path: /login
+          method: post
+          cors: true
+  
+  confirmUser:
+    handler: src/lambda/confirmUser.handler
+    events:
+      - http:
+          path: /confirm/{token}
+          method: get
+          cors: true
+
+build:
+  esbuild:
+    bundle: true
+    minify: true
+    # Evita meter el SDK de AWS en el paquete porque la Lambda ya lo tiene
+    external:
+      - '@aws-sdk/*'
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+  esbuild:
+    bundle: true
+    minify: true
+    exclude: ['@aws-sdk/*'] # El SDK de AWS ya viene incluido en el entorno
+
+plugins:
+  - serverless-offline

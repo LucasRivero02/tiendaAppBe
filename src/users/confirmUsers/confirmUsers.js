@@ -10,7 +10,7 @@ const confirm = async (req, res) => {
    try {
       // Obtener el token
       const { token } = req.params;
-      const verified = jwt.verify(token, process.env.SECRET_KEY);
+      const verified = jwt.verify(token, process.env.JWT_SECRET);
       if(verified === null) {
         return res.json({
             success: false,
